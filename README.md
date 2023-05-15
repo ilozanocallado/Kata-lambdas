@@ -1,5 +1,75 @@
 # KATA LAMBDAS
 
+## Introducción
+Las expresiones lambda son funciones anónimas, es decir, funciones que no necesitan una clase. Su sintáxis básica se detalla a continuación:
+
+### Sintaxis
+
+```
+(parámetros) -> (cuerpo-lambda)
+```
+1. El operador lambda (->) separa la declaración de parámetros de la declaración del cuerpo de la función.
+2. Parámetros:
+    - Cuando se tiene un solo parámetro no es necesario utilizar los paréntesis.
+    - Cuando no se tienen parámetros, o cuando se tienen dos o más, es necesario utilizar paréntesis.
+3. Cuerpo de lambda:
+    - Cuando el cuerpo de la expresión lambda tiene una única línea no es necesario utilizar las llaves y no necesitan especificar la clausula return en el caso de que deban devolver valores.
+    - Cuando el cuerpo de la expresión lambda tiene más de una línea se hace necesario utilizar las llaves y es necesario incluir la clausula return en el caso de que la función deba devolver un valor .
+
+
+Algunos ejemplos de expresiones lambda pueden ser:
+
+- ```z -> z + 2```
+- ```() -> System.out.println(» Mensaje 1 «)```
+- ```(int longitud, int altura) -> { return altura * longitud; }```
+```java
+ (String x) -> {
+String retorno = x;
+
+retorno = retorno.concat(» ***»);
+
+return retorno;
+}
+````
+Como hemos visto las expresiones lambda son funciones anónimas y pueden ser utilizadas allá donde el tipo aceptado sea una interfaz funcional pero… ¿qué es una interfaz funcional?
+
+Una interfaz funcional es una interfaz con uno y solo un método abstracto. La declaración es exactamente igual que las interfaces normales con dos características adicionales:
+
+- Tiene un único método abstracto, como ya hemos dicho.
+- De manera opcional puede estar anotada como @FunctionalInterface.
+
+El motivo de que la interfaz tenga un único método abstracto es que será la expresión lambda la que proveerá de la implementación para dicho método.
+
+A continuación algunos ejemplos de interfaz funcional:
+
+```java
+@FunctionalInterface
+public interface Runnable {
+    public abstract void run();
+}
+```
+
+```java
+public interface MiInterfaz {
+default void saluda() {
+    System.out.println("Un saludo!");
+}
+public abstract int calcula(int dato1, int dato2);
+}
+```
+
+```java
+@FunctionalInterface
+public interface Comparator {
+    // Se eluden los métodos default y estáticos
+    int compare(T o1, T o2);
+    // El método equals(Object obj) es implicitamente implementado por la clase objeto.
+    boolean equals(Object obj);
+}
+```
+
+# KATA
+
 With the release of Java 8, Java has finally added support for "lambda functions", that is, variables that contain a function which can operate on data just as class methods can (well, not just as class methods can...)
 
 ## PART 1
@@ -47,7 +117,8 @@ Function<MyObject, String> f = p -> p.toString();
 But what if we need more than one line in our function for the calculations? The syntax to do so is to enclose the function's commands in curly brackets and include a return statement:
 
 ```java
-Function<MyObject, String> f = p -> {StringBuffer out = new StringBuffer();
+Function<MyObject, String> f = p -> {
+        StringBuffer out = new StringBuffer();
         out.append(p.getName());
         out.append(MyObject.getStaticName());
         out.append("Constant message");
@@ -141,9 +212,9 @@ How do streams work?
 
 ```java
 int sum = widgets.stream()
-                 .filter(b -> b.getColor() == RED)
-                 .mapToInt(b -> b.getWeight())
-                 .sum();
+        .filter(b -> b.getColor() == RED)
+        .mapToInt(b -> b.getWeight())
+        .sum();
 ```
 
 Any Collection (such as widgets) can be turned into a stream (or a parallel stream with parallelStream()). Then, you chain functions onto the stream: filter, mapToInt, sum. So, this stream is calculating the sum of all the weights of the red widgets.
